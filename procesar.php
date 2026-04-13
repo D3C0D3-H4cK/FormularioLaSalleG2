@@ -7,11 +7,12 @@ if ($conexion->connect_error) {
 
 $nombre = $_POST['nombre'];
 $correo = $_POST['correo'];
+$telefono = $_POST['telefono'];
 $asunto = $_POST['asunto'];
 $mensaje = $_POST['mensaje'];
 
-$sql = "INSERT INTO contactos (nombre, correo, asunto, mensaje)
-        VALUES ('$nombre', '$correo', '$asunto', '$mensaje')";
+$sql = "INSERT INTO contactos (nombre, correo, telefono, asunto, mensaje)
+        VALUES ('$nombre', '$correo', '$telefono', '$asunto', '$mensaje')";
 
 if ($conexion->query($sql) === TRUE) {
     echo "Mensaje enviado correctamente";
