@@ -5,18 +5,23 @@ if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
 
-$nombre = $_POST['nombre'];
-$correo = $_POST['correo'];
-$asunto = $_POST['asunto'];
-$mensaje = $_POST['mensaje'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = $_POST['nombre'];
+    $correo = $_POST['correo'];
+    $telefono = $_POST['telefono'];
+    $asunto = $_POST['asunto'];
+    $mensaje = $_POST['mensaje'];
 
-$sql = "INSERT INTO contactos (nombre, correo, asunto, mensaje)
-        VALUES ('$nombre', '$correo', '$asunto', '$mensaje')";
+    $stmt = $conexion->prepare("INSERT INTO contactos (nombre, correo, telefono, asunto, mensaje) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $nombre, $correo, $telefono, $asunto, $mensaje);
 
-if ($conexion->query($sql) === TRUE) {
-    echo "Mensaje enviado correctamente";
-} else {
-    echo "Error: " . $conexion->error;
+    if ($stmt->execute()) {
+        echo "Mensaje enviado correctamente";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
 }
 
 $conexion->close();
